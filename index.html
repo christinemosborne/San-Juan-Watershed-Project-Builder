@@ -3,536 +3,469 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tribal Project Pathfinder</title>
+  <title>Lower San Juan Project Builder</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root, [data-theme="light"] {
-      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
-      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
-      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
-      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
-      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem; --space-16: 4rem; --space-20: 5rem;
-      --color-bg: #f7f6f2; --color-surface: #f9f8f5; --color-surface-2: #fbfbf9; --color-surface-offset: #f1eee8; --color-border: #d4d1ca; --color-divider: #dedbd5;
-      --color-text: #28251d; --color-text-muted: #66635c; --color-text-faint: #8e8a82; --color-text-inverse: #f9f8f4;
-      --color-primary: #01696f; --color-primary-hover: #0c4e54; --color-primary-highlight: #dce9e7; --color-warning: #964219; --color-success: #437a22; --color-error: #a12c7b;
-      --radius-sm: 0.375rem; --radius-md: 0.7rem; --radius-lg: 1rem; --radius-xl: 1.25rem; --radius-full: 9999px;
-      --shadow-sm: 0 1px 2px rgba(40,37,29,0.06); --shadow-md: 0 8px 24px rgba(40,37,29,0.08); --shadow-lg: 0 20px 48px rgba(40,37,29,0.12);
-      --font-display: 'Source Serif 4', Georgia, serif; --font-body: 'Work Sans', system-ui, sans-serif;
-      --content-default: 1080px;
+    :root,[data-theme="light"]{
+      --text-xs:clamp(.75rem,.72rem + .2vw,.875rem);--text-sm:clamp(.875rem,.84rem + .2vw,1rem);--text-base:clamp(1rem,.97rem + .2vw,1.08rem);--text-lg:clamp(1.125rem,1.02rem + .5vw,1.4rem);--text-xl:clamp(1.45rem,1.2rem + 1vw,2.1rem);--text-2xl:clamp(2rem,1.4rem + 2vw,3.2rem);
+      --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+      --color-bg:#f7f6f2;--color-surface:#fbfaf7;--color-surface-2:#f1eee8;--color-border:#d7d2ca;--color-divider:#e3ded6;--color-text:#26231d;--color-text-muted:#68645c;--color-text-faint:#8d897f;--color-primary:#01696f;--color-primary-highlight:#dce9e7;--color-warning:#9a5629;--color-success:#4d7b2f;--color-error:#a12c7b;--color-text-inverse:#fbfaf7;--shadow-sm:0 2px 8px rgba(26,24,20,.06);--shadow-md:0 14px 34px rgba(26,24,20,.09);--radius-sm:.5rem;--radius-md:.85rem;--radius-lg:1.1rem;--radius-xl:1.5rem;--radius-full:999px;--font-display:'Source Serif 4',serif;--font-body:'Work Sans',sans-serif;
     }
-    [data-theme="dark"] {
-      --color-bg: #171614; --color-surface: #1c1b19; --color-surface-2: #22211f; --color-surface-offset: #262523; --color-border: #393836; --color-divider: #2d2c2a;
-      --color-text: #e1dfda; --color-text-muted: #b6b3ac; --color-text-faint: #8b8880; --color-text-inverse: #1d1c1a;
-      --color-primary: #4f98a3; --color-primary-hover: #72adb5; --color-primary-highlight: #26363a; --color-warning: #d08b63; --color-success: #7fb65a; --color-error: #db82bb;
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2); --shadow-md: 0 8px 24px rgba(0,0,0,0.28); --shadow-lg: 0 20px 48px rgba(0,0,0,0.42);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh; font-family: var(--font-body); font-size: var(--text-base); line-height: 1.6;
-      color: var(--color-text); background: linear-gradient(180deg, var(--color-bg), var(--color-surface-offset));
-    }
-    img, svg { display: block; max-width: 100%; }
-    button, input, select, textarea { font: inherit; color: inherit; }
-    a { color: inherit; }
-    button { border: 0; background: none; cursor: pointer; }
-    :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
-    .skip-link {
-      position: absolute; left: -9999px; top: 1rem; background: var(--color-primary); color: var(--color-text-inverse); padding: .75rem 1rem; z-index: 100;
-    }
-    .skip-link:focus { left: 1rem; }
-    .shell { max-width: 1400px; margin: 0 auto; }
-    .topbar {
-      position: sticky; top: 0; z-index: 40; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--color-bg) 86%, transparent);
-      border-bottom: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
-    }
-    .topbar-inner, .hero, .grid, .footer-inner { max-width: var(--content-default); margin: 0 auto; padding-inline: var(--space-4); }
-    .topbar-inner {
-      min-height: 74px; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
-    }
-    .brand { display: flex; align-items: center; gap: var(--space-3); text-decoration: none; }
-    .brand-mark {
-      width: 2.6rem; height: 2.6rem; padding: .45rem; border-radius: 50%; background: var(--color-primary-highlight); color: var(--color-primary);
-    }
-    .brand-text strong { display: block; font-size: var(--text-sm); }
-    .brand-text span { display: block; font-size: var(--text-xs); color: var(--color-text-muted); }
-    .actions { display: flex; align-items: center; gap: .75rem; }
-    .toggle, .nav-chip {
-      min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full);
-      border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent); background: var(--color-surface); box-shadow: var(--shadow-sm);
-    }
-    .hero { padding-block: clamp(var(--space-10), 8vw, var(--space-20)) var(--space-8); }
-    .hero-card {
-      display: grid; grid-template-columns: 1.2fr .8fr; gap: var(--space-6); padding: clamp(var(--space-6), 4vw, var(--space-10));
-      background: linear-gradient(135deg, var(--color-surface), var(--color-surface-2)); border: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
-      border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);
-    }
-    .eyebrow { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .14em; color: var(--color-primary); font-weight: 700; margin-bottom: var(--space-3); }
-    h1 { font-family: var(--font-display); font-size: var(--text-2xl); line-height: 1.05; max-width: 12ch; margin-bottom: var(--space-4); }
-    .hero p { color: var(--color-text-muted); max-width: 60ch; }
-    .hero-actions, .chips { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: var(--space-5); }
-    .btn {
-      min-height: 46px; padding: .85rem 1.1rem; border-radius: var(--radius-full); font-size: var(--text-sm); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: .5rem;
-      border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
-    }
-    .btn-primary { background: var(--color-primary); color: var(--color-text-inverse); border-color: transparent; }
-    .btn-secondary { background: var(--color-surface); }
-    .hero-side {
-      display: grid; gap: var(--space-4); align-content: start;
-    }
-    .stat-card, .panel, .path-card, .fund-card, .decision-card, .step-card, .resource-card {
-      background: var(--color-surface); border: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
-    }
-    .stat-card { padding: var(--space-5); }
-    .stat-card strong { display: block; font-size: var(--text-xl); font-family: var(--font-display); }
-    .stat-card span { color: var(--color-text-muted); font-size: var(--text-sm); }
-    main { padding-bottom: var(--space-16); }
-    .grid { display: grid; grid-template-columns: 310px minmax(0,1fr); gap: var(--space-6); align-items: start; }
-    .sidebar { position: sticky; top: 98px; display: grid; gap: var(--space-4); }
-    .panel { padding: var(--space-5); }
-    .panel h2, .content-section h2 { font-size: var(--text-lg); margin-bottom: var(--space-4); }
-    .field { display: grid; gap: .45rem; margin-bottom: var(--space-4); }
-    .field label { font-size: var(--text-sm); font-weight: 600; }
-    .field input, .field select, .field textarea {
-      width: 100%; border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--color-surface-2); padding: .85rem .9rem;
-    }
-    .field textarea { min-height: 110px; resize: vertical; }
-    .helper { font-size: var(--text-xs); color: var(--color-text-muted); }
-    .content-stack { display: grid; gap: var(--space-6); }
-    .content-section { display: grid; gap: var(--space-4); }
-    .section-head { display: flex; justify-content: space-between; gap: var(--space-4); align-items: end; }
-    .section-head p { color: var(--color-text-muted); max-width: 58ch; }
-    .decision-card, .path-card, .fund-card, .step-card, .resource-card { padding: var(--space-5); }
-    .decision-card { background: linear-gradient(180deg, var(--color-surface), color-mix(in srgb, var(--color-primary-highlight) 38%, var(--color-surface))); }
-    .decision-grid, .path-grid, .fund-grid, .steps-grid, .resource-grid { display: grid; gap: var(--space-4); }
-    .decision-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .path-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    .fund-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .steps-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .tag { display: inline-flex; align-items: center; gap: .4rem; padding: .35rem .7rem; border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 700; background: var(--color-primary-highlight); color: var(--color-primary); }
-    .kicker { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .12em; color: var(--color-text-faint); margin-bottom: .55rem; }
-    .title-sm { font-size: var(--text-base); font-weight: 700; margin-bottom: .45rem; }
-    ul.clean { list-style: none; display: grid; gap: .65rem; }
-    ul.clean li { padding-left: 1rem; position: relative; color: var(--color-text-muted); }
-    ul.clean li::before { content: ''; position: absolute; left: 0; top: .72rem; width: .4rem; height: .4rem; border-radius: 50%; background: var(--color-primary); }
-    .timeline { display: grid; gap: .9rem; }
-    .timeline-step { display: grid; grid-template-columns: 2.6rem 1fr; gap: .9rem; align-items: start; }
-    .step-num {
-      width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--color-primary); color: var(--color-text-inverse); display: grid; place-items: center; font-weight: 700;
-    }
-    .muted { color: var(--color-text-muted); }
-    .status {
-      display: inline-flex; padding: .28rem .62rem; border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 700;
-      background: color-mix(in srgb, var(--color-warning) 14%, var(--color-surface)); color: var(--color-warning);
-    }
-    .table-wrap { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent); }
-    table { width: 100%; border-collapse: collapse; background: var(--color-surface); }
-    th, td { padding: .9rem 1rem; text-align: left; border-bottom: 1px solid var(--color-divider); vertical-align: top; }
-    th { font-size: var(--text-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-muted); background: var(--color-surface-2); }
-    .footer-inner { padding: var(--space-8) var(--space-4) var(--space-12); color: var(--color-text-muted); }
-    .empty-note { border-left: 3px solid var(--color-primary); padding-left: 1rem; color: var(--color-text-muted); }
-    .pill-row { display: flex; flex-wrap: wrap; gap: .5rem; }
-    .pill { padding: .4rem .7rem; border-radius: var(--radius-full); background: var(--color-surface-offset); font-size: var(--text-xs); }
-    @media (max-width: 980px) {
-      .hero-card, .grid, .decision-grid, .path-grid, .fund-grid, .steps-grid { grid-template-columns: 1fr; }
-      .sidebar { position: static; }
-      h1 { max-width: 15ch; }
-    }
+    [data-theme="dark"]{--color-bg:#151412;--color-surface:#1d1c1a;--color-surface-2:#262421;--color-border:#3a3835;--color-divider:#2c2a27;--color-text:#e6e2db;--color-text-muted:#b8b2a8;--color-text-faint:#8f897d;--color-primary:#59a0aa;--color-primary-highlight:#243639;--color-warning:#d89c63;--color-success:#85b85f;--color-error:#dd8fc1;--color-text-inverse:#181715;--shadow-sm:0 2px 10px rgba(0,0,0,.25);--shadow-md:0 16px 36px rgba(0,0,0,.35)}
+    *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth} body{font-family:var(--font-body);font-size:var(--text-base);line-height:1.6;background:linear-gradient(180deg,var(--color-bg),var(--color-surface-2));color:var(--color-text)} img,svg{display:block;max-width:100%} button,input,select,textarea{font:inherit;color:inherit} button{cursor:pointer;border:none;background:none} a{color:inherit} :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm)}
+    .skip-link{position:absolute;left:-9999px;top:1rem;background:var(--color-primary);color:var(--color-text-inverse);padding:.75rem 1rem;z-index:100}.skip-link:focus{left:1rem}
+    .shell{max-width:1380px;margin:0 auto}.topbar{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--color-bg) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid color-mix(in srgb,var(--color-text) 10%,transparent)}
+    .topbar-inner,.hero,.layout,.footer-inner{max-width:1180px;margin:0 auto;padding-inline:var(--space-4)}
+    .topbar-inner{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
+    .brand{display:flex;align-items:center;gap:var(--space-3)} .brand-mark{width:2.7rem;height:2.7rem;padding:.5rem;border-radius:50%;background:var(--color-primary-highlight);color:var(--color-primary)} .brand-text strong{display:block;font-size:var(--text-sm)} .brand-text span{display:block;font-size:var(--text-xs);color:var(--color-text-muted)}
+    .toggle{min-width:44px;min-height:44px;border-radius:var(--radius-full);display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--color-text) 12%,transparent);background:var(--color-surface)}
+    .hero{padding-block:var(--space-10) var(--space-8)} .hero-card{display:grid;grid-template-columns:1.15fr .85fr;gap:var(--space-6);padding:clamp(var(--space-6),5vw,var(--space-10));background:linear-gradient(135deg,var(--color-surface),var(--color-surface-2));border:1px solid color-mix(in srgb,var(--color-text) 8%,transparent);border-radius:var(--radius-xl);box-shadow:var(--shadow-md)}
+    .eyebrow{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.13em;color:var(--color-primary);font-weight:700;margin-bottom:var(--space-3)} h1{font-family:var(--font-display);font-size:var(--text-2xl);line-height:1.03;max-width:13ch;margin-bottom:var(--space-4)} .lead{color:var(--color-text-muted);max-width:62ch}
+    .hero-actions,.chip-row{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:var(--space-5)} .btn{min-height:46px;padding:.85rem 1.1rem;border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;border:1px solid color-mix(in srgb,var(--color-text) 12%,transparent)} .btn-primary{background:var(--color-primary);color:var(--color-text-inverse);border-color:transparent} .btn-secondary{background:var(--color-surface)} .chip{display:inline-flex;padding:.4rem .75rem;border-radius:var(--radius-full);background:var(--color-primary-highlight);color:var(--color-primary);font-size:var(--text-xs);font-weight:700}
+    .hero-side{display:grid;gap:var(--space-4)} .stat{padding:var(--space-5);background:var(--color-surface);border:1px solid color-mix(in srgb,var(--color-text) 10%,transparent);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)} .stat strong{display:block;font-family:var(--font-display);font-size:var(--text-xl)} .stat span{font-size:var(--text-sm);color:var(--color-text-muted)}
+    .layout{display:grid;grid-template-columns:330px minmax(0,1fr);gap:var(--space-6);padding-bottom:var(--space-16)} .sidebar{position:sticky;top:96px;align-self:start;display:grid;gap:var(--space-4)} .panel,.card{background:var(--color-surface);border:1px solid color-mix(in srgb,var(--color-text) 10%,transparent);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)} .panel{padding:var(--space-5)} .panel h2,.section h2{font-size:var(--text-lg);margin-bottom:var(--space-4)}
+    .field{display:grid;gap:.45rem;margin-bottom:var(--space-4)} .field label{font-size:var(--text-sm);font-weight:600} .field input,.field select,.field textarea{width:100%;padding:.85rem .9rem;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface-2)} .field textarea{min-height:108px;resize:vertical} .helper{font-size:var(--text-xs);color:var(--color-text-muted)}
+    .content{display:grid;gap:var(--space-6)} .section{display:grid;gap:var(--space-4)} .section-head{display:flex;justify-content:space-between;align-items:end;gap:var(--space-4)} .section-head p{max-width:58ch;color:var(--color-text-muted)}
+    .decision{padding:var(--space-5);background:linear-gradient(180deg,var(--color-surface),color-mix(in srgb,var(--color-primary-highlight) 32%,var(--color-surface)));border-radius:var(--radius-lg)} .status{display:inline-flex;padding:.35rem .7rem;border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:700;background:var(--color-primary-highlight);color:var(--color-primary)}
+    .grid-2,.grid-3{display:grid;gap:var(--space-4)} .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))} .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))} .kicker{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.12em;color:var(--color-text-faint);margin-bottom:.55rem} .title-sm{font-size:var(--text-base);font-weight:700;margin-bottom:.45rem}
+    .list{list-style:none;display:grid;gap:.65rem}.list li{position:relative;padding-left:1rem;color:var(--color-text-muted)} .list li::before{content:'';position:absolute;left:0;top:.72rem;width:.4rem;height:.4rem;border-radius:50%;background:var(--color-primary)}
+    .table-wrap{overflow:auto;border:1px solid color-mix(in srgb,var(--color-text) 10%,transparent);border-radius:var(--radius-lg)} table{width:100%;border-collapse:collapse;background:var(--color-surface)} th,td{padding:.9rem 1rem;text-align:left;border-bottom:1px solid var(--color-divider);vertical-align:top} th{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-muted);background:var(--color-surface-2)}
+    .report{white-space:pre-wrap;background:var(--color-surface);border:1px dashed color-mix(in srgb,var(--color-text) 20%,transparent);border-radius:var(--radius-lg);padding:var(--space-5);font-size:var(--text-sm)} .footer-inner{padding:var(--space-8) var(--space-4) var(--space-12);color:var(--color-text-muted)}
+    @media (max-width: 980px){.hero-card,.layout,.grid-2,.grid-3{grid-template-columns:1fr}.sidebar{position:static}h1{max-width:15ch}}
   </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topbar">
     <div class="topbar-inner">
-      <a class="brand" href="#top" aria-label="Tribal Project Pathfinder home">
-        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true" fill="none">
-          <path d="M12 45C20 23 31 14 52 10C46 26 38 40 20 54" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M18 36C25 38 31 43 34 51" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      <div class="brand" aria-label="Lower San Juan Project Builder">
+        <svg class="brand-mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <path d="M12 45C18 27 32 13 52 10C46 25 39 39 19 54" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M18 36C24 37 30 42 34 51" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
         </svg>
-        <div class="brand-text">
-          <strong>Tribal Project Pathfinder</strong>
-          <span>From idea to coordination to funding</span>
-        </div>
-      </a>
-      <div class="actions">
-        <a class="nav-chip" href="#results" aria-label="Jump to project path">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <button class="toggle" data-theme-toggle aria-label="Switch to dark mode">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
+        <div class="brand-text"><strong>Lower San Juan Project Builder</strong><span>Contact sequence, logic, funding, and exportable report</span></div>
       </div>
+      <button class="toggle" data-theme-toggle aria-label="Switch theme"></button>
     </div>
   </header>
 
-  <section class="hero shell" id="top">
+  <section class="hero shell">
     <div class="hero-card">
       <div>
-        <div class="eyebrow">Built from the San Juan River Watershed playbook</div>
-        <h1>Choose the right path before a project stalls.</h1>
-        <p>This web app helps Tribal leaders and project champions define a project, identify who to engage first, understand likely approvals, and see which funding lanes to pursue based on jurisdiction, project type, and readiness.</p>
+        <div class="eyebrow">GitHub-ready index.html</div>
+        <h1>Build a project path before the project stalls.</h1>
+        <p class="lead">This builder turns the coordination playbook and project development process into a clean web interface where Tribal leaders can choose a project type, see who to contact first, follow if-then logic, and generate a planning report at the end.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#builder">Start a project path</a>
-          <a class="btn btn-secondary" href="#timeline">View the six-step process</a>
+          <a class="btn btn-primary" href="#builder">Start builder</a>
+          <a class="btn btn-secondary" href="#reportSection">Jump to report</a>
         </div>
-        <div class="chips">
-          <span class="tag">Water</span>
-          <span class="tag">Infrastructure</span>
-          <span class="tag">Community development</span>
+        <div class="chip-row">
+          <span class="chip">Contact ladders</span>
+          <span class="chip">If-then logic</span>
+          <span class="chip">Funding hooks</span>
+          <span class="chip">Printable report</span>
         </div>
       </div>
       <div class="hero-side">
-        <div class="stat-card"><strong>6</strong><span>Coordination steps in the playbook</span></div>
-        <div class="stat-card"><strong>10–15</strong><span>Priority projects recommended for early focus</span></div>
-        <div class="stat-card"><strong>12 months</strong><span>Illustrative implementation window from setup to first review</span></div>
+        <div class="stat"><strong>6</strong><span>Coordination steps in the handbook workflow</span></div>
+        <div class="stat"><strong>5+</strong><span>Project pathways with pre-programmed sequences</span></div>
+        <div class="stat"><strong>1</strong><span>Generated planning report for leaders and partners</span></div>
       </div>
     </div>
   </section>
 
   <main id="main" class="shell">
-    <div class="grid">
+    <div class="layout">
       <aside class="sidebar" id="builder">
         <section class="panel">
-          <h2>Project builder</h2>
-          <div class="field">
-            <label for="projectName">Project name</label>
-            <input id="projectName" type="text" placeholder="Example: Red Mesa irrigation rehab" />
-          </div>
-          <div class="field">
-            <label for="projectType">Project type</label>
+          <h2>Project setup</h2>
+          <div class="field"><label for="projectName">Project name</label><input id="projectName" type="text" placeholder="Example: Oljato contaminated well response"></div>
+          <div class="field"><label for="community">Community / Chapter</label><input id="community" type="text" placeholder="Example: Oljato, Aneth, White Mesa"></div>
+          <div class="field"><label for="projectType">Project type</label>
             <select id="projectType">
-              <option value="irrigation">Irrigation / agriculture water</option>
-              <option value="culinary">Culinary / drinking water</option>
-              <option value="flood">Transportation / flood recovery</option>
-              <option value="quality">Water quality / restoration</option>
-              <option value="community">Community development / infrastructure</option>
+              <option value="grazing">Grazing impacts / range or riparian</option>
+              <option value="wells">Contaminated drinking water wells</option>
+              <option value="erosion">Erosion / streambank / watershed damage</option>
+              <option value="smallIrrigation">Small-medium irrigation</option>
+              <option value="majorPipelines">Major pipelines / large-scale irrigation</option>
+              <option value="communityWater">Community drinking water systems</option>
             </select>
           </div>
-          <div class="field">
-            <label for="jurisdiction">Primary jurisdiction pattern</label>
+          <div class="field"><label for="jurisdiction">Jurisdiction pattern</label>
             <select id="jurisdiction">
-              <option value="tribal">On Tribal land only</option>
-              <option value="multi" selected>Crosses Tribal + county/state/federal lines</option>
-              <option value="county">Mostly county or municipal with Tribal coordination</option>
+              <option value="tribal">Primarily Tribal land</option>
+              <option value="multi" selected>Cross-jurisdictional</option>
+              <option value="county">County / municipal interface</option>
             </select>
           </div>
-          <div class="field">
-            <label for="stage">Current readiness</label>
+          <div class="field"><label for="urgency">Urgency</label>
+            <select id="urgency">
+              <option value="planning">Planning</option>
+              <option value="urgent">Urgent but not emergency</option>
+              <option value="emergency">Immediate health or safety issue</option>
+            </select>
+          </div>
+          <div class="field"><label for="stage">Current stage</label>
             <select id="stage">
-              <option value="idea">Idea / need identified</option>
-              <option value="planning">Planning / scoping underway</option>
-              <option value="design">Design / permits being defined</option>
-              <option value="funding">Ready for funding asks</option>
+              <option value="idea">Idea / issue identified</option>
+              <option value="scoping">Scoping / partner mapping</option>
+              <option value="design">Design / permitting / engineering</option>
+              <option value="funding">Funding package development</option>
             </select>
           </div>
-          <div class="field">
-            <label for="location">Community or chapter</label>
-            <input id="location" type="text" placeholder="Example: Aneth, White Mesa, Bluff" />
-          </div>
-          <div class="field">
-            <label for="needs">What is driving the project?</label>
-            <textarea id="needs" placeholder="Need, urgency, partners already involved, and what success looks like."></textarea>
-          </div>
-          <button id="buildPath" class="btn btn-primary" type="button">Generate project path</button>
-          <p class="helper" style="margin-top:.85rem;">This is a guided planning aid, not a substitute for formal Tribal, state, or federal approvals.</p>
+          <div class="field"><label for="details">Need or issue description</label><textarea id="details" placeholder="What is happening, who is affected, and what outcome is needed?"></textarea></div>
+          <button class="btn btn-primary" id="buildBtn" type="button">Build project path</button>
+          <button class="btn btn-secondary" id="printBtn" type="button" style="margin-top:.75rem;">Print report</button>
+          <p class="helper" style="margin-top:.9rem;">This tool is a coordination aid. It does not replace legal review, Tribal approval, or formal agency consultation.</p>
         </section>
 
         <section class="panel">
-          <h2>Readiness cues</h2>
-          <div class="pill-row">
-            <span class="pill">Community support confirmed</span>
-            <span class="pill">Lead identified</span>
-            <span class="pill">Maps or location known</span>
-            <span class="pill">Likely funding fit</span>
-          </div>
+          <h2>Decision logic</h2>
+          <ul class="list" id="logicBullets"></ul>
         </section>
       </aside>
 
-      <div class="content-stack">
-        <section class="content-section" id="results">
+      <div class="content">
+        <section class="section">
           <div class="section-head">
             <div>
-              <h2>Recommended path</h2>
-              <p>The app starts from the playbook’s core question: who needs to be engaged, and in what order. Results update instantly based on the project you describe.</p>
+              <h2>Dashboard</h2>
+              <p>The dashboard keeps the interface uncluttered: a short summary, a contact ladder, funding hooks, and report text that can be printed or copied into a memo.</p>
             </div>
-            <span class="status" id="stageBadge">Idea stage</span>
+            <span class="status" id="statusBadge">Planning stage</span>
           </div>
-          <div class="decision-card">
-            <div class="kicker">Decision summary</div>
-            <div class="decision-grid">
+          <div class="card decision">
+            <div class="grid-2">
               <div>
-                <div class="title-sm" id="summaryTitle">Irrigation project with multi-jurisdiction coordination</div>
-                <p class="muted" id="summaryText">Start with Chapter and Tribal validation, then move through county, state water rights, and federal trust-land review before shaping funding packages.</p>
+                <div class="kicker">Project summary</div>
+                <div class="title-sm" id="summaryTitle">Cross-jurisdiction project setup</div>
+                <p id="summaryText">Choose a project type to generate the recommended pathway.</p>
               </div>
               <div>
-                <ul class="clean" id="priorityList"></ul>
+                <div class="kicker">Top priorities</div>
+                <ul class="list" id="priorityList"></ul>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="content-section">
-          <div class="section-head">
-            <div>
-              <h2>Engagement sequence</h2>
-              <p>These are the first stops and supporting partners to bring in. The order emphasizes Tribal and Chapter leadership first, then outside agencies in the right sequence.</p>
-            </div>
-          </div>
-          <div class="path-grid" id="pathGrid"></div>
+        <section class="section">
+          <div class="section-head"><div><h2>Sequence for contacting entities</h2><p>These steps combine the general coordination rules from the process handbook with project-specific contact ladders from the project builder.</p></div></div>
+          <div class="grid-3" id="sequenceGrid"></div>
         </section>
 
-        <section class="content-section">
-          <div class="section-head">
-            <div>
-              <h2>Funding lanes</h2>
-              <p>Funding options are grouped by what the playbook points to most often: Tribal alignment, permitting or trust responsibilities, water infrastructure, and technical assistance or gap funding.</p>
-            </div>
-          </div>
-          <div class="fund-grid" id="fundGrid"></div>
+        <section class="section">
+          <div class="section-head"><div><h2>If-then logic</h2><p>The builder adds simple branching logic so leaders can see how urgency, jurisdiction, and project stage change the path.</p></div></div>
+          <div class="grid-2" id="logicGrid"></div>
         </section>
 
-        <section class="content-section" id="timeline">
-          <div class="section-head">
-            <div>
-              <h2>Six-step coordination process</h2>
-              <p>This section translates the source playbook into a working dashboard view that leaders can scan while planning a project or preparing a coordination meeting.</p>
-            </div>
-          </div>
-          <div class="steps-grid" id="stepsGrid"></div>
+        <section class="section">
+          <div class="section-head"><div><h2>Funding and permitting hooks</h2><p>Funding conversations are layered after the pathway is clear, so agencies and funders are supporting a defined project rather than a general concern.</p></div></div>
+          <div class="grid-2" id="fundingGrid"></div>
         </section>
 
-        <section class="content-section">
-          <div class="section-head">
-            <div>
-              <h2>12-month implementation view</h2>
-              <p>The playbook includes a one-year roadmap from confirming a backbone entity through the first after-action review. This table keeps those milestones visible while projects move.</p>
-            </div>
-          </div>
+        <section class="section">
+          <div class="section-head"><div><h2>Coordination timeline</h2><p>The six-step coordination structure supports stakeholder identification, assessment, workshop validation, reporting, approval, and portal-based tracking.</p></div></div>
           <div class="table-wrap">
             <table>
-              <thead>
-                <tr><th>Months</th><th>Milestone</th><th>Deliverable</th></tr>
-              </thead>
-              <tbody id="timelineTable"></tbody>
+              <thead><tr><th>Step</th><th>Focus</th><th>Output</th></tr></thead>
+              <tbody id="timelineBody"></tbody>
             </table>
           </div>
         </section>
 
-        <section class="content-section">
-          <div class="section-head">
-            <div>
-              <h2>Risks and safeguards</h2>
-              <p>These prompts turn the playbook’s risk section into practical checks before a team launches a project or convenes a cross-government meeting.</p>
-            </div>
-          </div>
-          <div class="resource-grid" id="riskGrid"></div>
-        </section>
-
-        <section class="content-section">
-          <div class="section-head">
-            <div>
-              <h2>Notes for funders and partners</h2>
-              <p class="empty-note">Use this view to turn planning into action: confirm community support, identify a lead, build a short project story, and document where a project is blocked so partners can help remove the next barrier.</p>
-            </div>
-          </div>
+        <section class="section" id="reportSection">
+          <div class="section-head"><div><h2>Generated report</h2><p>This section produces a plain-language report that can be printed, copied into email, or used in a meeting packet.</p></div></div>
+          <div class="report" id="reportOutput"></div>
         </section>
       </div>
     </div>
   </main>
 
-  <footer>
-    <div class="footer-inner">
-      Designed as a practical, browser-based translation of the San Juan River Watershed Coordination Process Playbook for Tribal project planning and funding conversations.
-    </div>
-  </footer>
+  <footer><div class="footer-inner">Built from the Lower San Juan watershed coordination handbook and project development process to support Tribal-first project planning, sequence, and reporting.</div></footer>
 
   <script>
     const APP = {
-      steps: [
-        { title: 'Stakeholder identification', timeline: 'Months 1–2', objective: 'Build a validated shared list of relevant entities and people by geography and function.', outputs: ['Contact list', 'Stakeholder map', 'Authority notes'] },
-        { title: 'Pre-workshop assessment', timeline: 'Months 2–4', objective: 'Use a neutral facilitator and confidential interviews to map barriers, timelines, and existing projects.', outputs: ['Assessment memo', 'Project inventory map', 'Draft process notes'] },
-        { title: 'Stakeholder workshop', timeline: 'Month 5', objective: 'Validate findings, co-design process maps, agree on priorities, and confirm governance.', outputs: ['Flow diagrams', 'Priority list', 'Governance roles'] },
-        { title: 'Workshop report', timeline: 'Months 5–6', objective: 'Capture engagement sequences, decision trees, project inventory, and action plans in one shareable document.', outputs: ['Detailed report', 'One-page summary'] },
-        { title: 'Approval and endorsements', timeline: 'Months 7–8', objective: 'Circulate the report, resolve comments, and secure formal buy-in from key governments and partners.', outputs: ['Final endorsed report', 'Issues tabled for later'] },
-        { title: 'Implement and update', timeline: 'Months 7–12 and ongoing', objective: 'Launch the portal, track projects, hold quarterly meetings, and update process maps annually.', outputs: ['Live portal', 'Master project chart', 'Annual review'] }
-      ],
       timeline: [
-        ['1–2', 'Confirm backbone entity and steering group', 'Signed agreement and initial contact list'],
-        ['2–3', 'Complete stakeholder identification', 'Validated stakeholder list and map'],
-        ['3–4', 'Begin pre-workshop interviews', 'Facilitator hired and interviews underway'],
-        ['4', 'Complete assessment', 'Assessment memo and project inventory map'],
-        ['5', 'Hold stakeholder workshop', 'Process diagrams and priority project list'],
-        ['5–6', 'Draft workshop report', 'Full report and one-page summary'],
-        ['7', 'Circulate report for review', 'Comment period opens'],
-        ['8', 'Finalize and seek endorsements', 'Approved report with endorsements'],
-        ['7–9', 'Design and build website/portal', 'Portal prototype for stakeholder review'],
-        ['10', 'Launch website/portal', 'Live portal with list, map, and guides'],
-        ['10–12', 'Quarterly coordination meetings', 'Meeting notes and updated status chart'],
-        ['12', 'After-action review', 'Review memo and playbook updates as needed']
+        ['1', 'Stakeholder identification', 'Validated contact list, map, and role descriptions'],
+        ['2', 'Pre-workshop assessment', 'Assessment memo, process notes, and project inventory map'],
+        ['3', 'Key stakeholder workshop', 'Draft flow diagrams, priorities, and governance alignment'],
+        ['4', 'Workshop report', 'Detailed report and one-page plain-language summary'],
+        ['5', 'Approval and endorsements', 'Formal comments, revisions, and documented endorsements'],
+        ['6', 'Implementation and updates', 'Live portal, project chart, meeting notes, and annual review']
       ],
-      risks: [
-        { title: 'Governance and sovereignty tensions', text: 'Make Tribal and Chapter leadership explicit, use co-chairs, and require Tribal validation before major process changes.' },
-        { title: 'Process fatigue', text: 'Focus on one or two visible wins early, and keep meetings short and decision-focused.' },
-        { title: 'Changing government processes', text: 'Assign a named process steward, maintain annual updates, and date-stamp all process maps.' },
-        { title: 'Limited staff capacity', text: 'Align meetings to real decisions and build tools that reduce coordination burden instead of adding it.' },
-        { title: 'Representation gaps', text: 'Use transparent participation criteria and multiple engagement modes so Chapters and communities do not feel excluded.' },
-        { title: 'Scope creep', text: 'Limit the initial focus to the top 10–15 priority projects and expand only after early wins are documented.' }
-      ],
-      configs: {
-        irrigation: {
-          label: 'Irrigation / agriculture water',
-          summary: 'Start with community support, then Tribal water, agriculture, and natural resource review before expanding to county, state water rights, and federal programs.',
-          sequence: ['Chapter House or local Tribal community leadership', 'Navajo Nation or Tribal water, agriculture, and natural resources programs', 'Navajo Utah Commission or Tribal coordination leadership', 'San Juan County if county land or roads are involved', 'Utah Division of Water Rights', 'Bureau of Indian Affairs', 'Bureau of Reclamation', 'Natural Resource Conservation Service', 'NGO technical and gap-funding partners'],
-          funding: ['BIA program funding and trust-related support', 'Bureau of Reclamation water delivery and infrastructure programs', 'NRCS conservation and technical assistance', 'NGO and philanthropic gap-filling support'],
-          decisions: ['Confirm community support first', 'Map water rights and land status early', 'Package technical assistance with capital asks']
+      pathways: {
+        grazing: {
+          label: 'Grazing impacts / range or riparian',
+          summary: 'Treat this as both a range management issue and a nonpoint-source water quality project when erosion, runoff, or riparian damage are present.',
+          contacts: [
+            'Chapter President and Chapter Grazing Official',
+            'Navajo Nation Agriculture / Natural Resources',
+            'Navajo Nation Water Resources',
+            'Navajo Utah Commission',
+            'San Juan County and Utah agriculture / natural resources entities',
+            'NRCS and BLM / U.S. Forest Service if federal lands or allotments are involved'
+          ],
+          funding: [
+            'Tribal / Chapter contributions and local match',
+            'Navajo Nation range or natural resources funds',
+            'USDA NRCS EQIP and CSP',
+            'EPA Section 319 Tribal Nonpoint Source funds',
+            'EPA Tribal GAP for program capacity and outreach',
+            'Utah agriculture, watershed, and rangeland support programs'
+          ],
+          permits: ['Grazing plan coordination', 'Federal allotment review if BLM/USFS lands are involved', 'Watershed or riparian restoration coordination']
         },
-        culinary: {
-          label: 'Culinary / drinking water',
-          summary: 'Treat public health, utility operations, and jurisdictional approvals as parallel workstreams while preserving Tribal leadership on reservation matters.',
-          sequence: ['Chapter or Tribal leadership confirmation', 'Tribal utility and water resources programs', 'Navajo Utah Commission or Tribal coordination office', 'County or municipality if interties or roads are involved', 'Utah drinking water and water rights agencies as needed', 'Bureau of Indian Affairs', 'Bureau of Reclamation and infrastructure funders', 'NGO technical assistance partners'],
-          funding: ['Tribal utility and settlement-aligned packages', 'State and federal drinking water infrastructure programs', 'BIA trust-land and program opportunities', 'Bridge funding for engineering and readiness'],
-          decisions: ['Document health and service impacts', 'Clarify the operating entity', 'Prepare engineering-readiness materials early']
+        wells: {
+          label: 'Contaminated drinking water wells',
+          summary: 'Use a two-track response: immediate public health action plus long-term infrastructure planning.',
+          contacts: [
+            'Chapter leadership and local water lead',
+            'NTUA and Navajo Nation Water Resources',
+            'Navajo Nation environmental / water quality staff',
+            'Navajo Utah Commission and IHS Sanitation Facilities Construction',
+            'San Juan County and Utah DEQ / Division of Drinking Water',
+            'EPA Tribal water programs and source-specific agencies'
+          ],
+          funding: [
+            'IHS Sanitation Facilities Construction',
+            'NTUA and Navajo Nation capital resources',
+            'Utah Drinking Water Board and related state funding',
+            'EPA Section 106 Tribal Water Quality funds',
+            'EPA Section 319 if nonpoint contamination is involved',
+            'EPA Tribal GAP and nonprofit support for interim response'
+          ],
+          permits: ['Water quality testing and source identification', 'Drinking water regulatory coordination', 'Emergency response coordination where needed']
         },
-        flood: {
-          label: 'Transportation / flood recovery',
-          summary: 'Prioritize emergency or recovery needs, road ownership, and infrastructure dependencies while sequencing Tribal approval before outside agency design decisions.',
-          sequence: ['Chapter and Tribal emergency or local leadership', 'Tribal transportation and natural resources staff', 'County roads or local government partners', 'State transportation or emergency management partners', 'Bureau of Indian Affairs and relevant federal land managers', 'Army Corps or related federal recovery programs', 'NGO recovery and resilience partners'],
-          funding: ['Emergency or resilience funding sources', 'Transportation and flood recovery programs', 'BIA and federal land-management coordination', 'Planning grants for resilience design'],
-          decisions: ['Clarify who owns the road or crossing', 'Separate emergency fixes from long-term capital work', 'Capture damage and community impact evidence']
+        erosion: {
+          label: 'Erosion / streambank / watershed damage',
+          summary: 'Frame this as a multi-benefit watershed package when water quality, roads, habitat, and access are all affected.',
+          contacts: [
+            'Chapter leadership',
+            'Navajo Nation Water Resources and Natural Resources',
+            'Navajo Utah Commission',
+            'Navajo transportation and San Juan County Roads / Public Works',
+            'NRCS and BLM / U.S. Forest Service',
+            'Army Corps and state entities if in-channel work or regulated stream modifications are needed'
+          ],
+          funding: [
+            'Navajo Nation and Chapter resources for small works or match',
+            'NRCS watershed, erosion control, and conservation support',
+            'San Juan County and Tribal transportation budgets',
+            'EPA Section 319 Tribal Nonpoint Source funds',
+            'EPA Section 106 for monitoring',
+            'Utah hazard or flood programs and FEMA where disaster-linked'
+          ],
+          permits: ['Army Corps Section 404 if in-channel work is needed', 'State and Tribal environmental coordination', 'Transportation owner approvals']
         },
-        quality: {
-          label: 'Water quality / restoration',
-          summary: 'Build a path that combines Tribal environmental priorities, watershed coordination, technical monitoring, and funder-ready restoration stories.',
-          sequence: ['Chapter or community leadership', 'Tribal natural resources, water, and cultural resources teams', 'Navajo Utah Commission or watershed coordination lead', 'County or municipality if shared waterways or infrastructure are involved', 'State natural resource and water quality entities', 'Bureau of Indian Affairs and federal land agencies', 'Fish and Wildlife, NRCS, or restoration partners', 'NGO technical partners'],
-          funding: ['Restoration and watershed grants', 'Federal conservation and habitat programs', 'Technical assistance for monitoring and design', 'Gap funding for community engagement and stewardship'],
-          decisions: ['Protect cultural and ecological priorities', 'Use data without losing community story', 'Bundle monitoring with implementation asks']
+        smallIrrigation: {
+          label: 'Small-medium irrigation',
+          summary: 'Start with local and Tribal water and agriculture alignment, then move outward to county and applicable state or federal partners.',
+          contacts: [
+            'Chapter President and Grazing Official where relevant',
+            'Navajo Nation Water Resources',
+            'Navajo Nation Agriculture / Natural Resources',
+            'Navajo Utah Commission',
+            'San Juan County',
+            'NRCS, Utah water / agriculture entities, and Reclamation where applicable'
+          ],
+          funding: [
+            'NRCS conservation and irrigation support',
+            'Utah water resources or agriculture programs',
+            'Reclamation where applicable',
+            'Navajo / Chapter funds',
+            'Technical assistance partners and facilitation support'
+          ],
+          permits: ['Water rights review for Utah-jurisdiction components', 'Land access and right-of-way review', 'Agricultural and infrastructure coordination']
         },
-        community: {
-          label: 'Community development / infrastructure',
-          summary: 'Use a broad coordination lane that starts with Tribal priorities, identifies land and permitting complexity, and then aligns outside partners to the project.',
-          sequence: ['Chapter, Tribal Council, or community leadership', 'Relevant Tribal departments for land, planning, utilities, and resources', 'Navajo Utah Commission or Tribal coordination lead', 'County or municipality for shared infrastructure or permitting', 'State planning or infrastructure agencies as needed', 'Bureau of Indian Affairs and other federal agencies based on land status', 'NGO and philanthropic partners'],
-          funding: ['Planning and readiness grants', 'Infrastructure and community development funds', 'BIA and federal coordination-dependent programs', 'Philanthropic gap funding and technical support'],
-          decisions: ['Define the lead and ownership model', 'Clarify whether the project is shovel-ready or still conceptual', 'Develop a simple project story for partners and funders']
+        majorPipelines: {
+          label: 'Major pipelines / large-scale irrigation',
+          summary: 'These are backbone systems tied to settlement implementation and should be built around clearly documented beneficiary nodes and long-term governance.',
+          contacts: [
+            'Affected Chapters and Navajo Nation Water Resources',
+            'Navajo leadership, legal counsel, and Navajo Utah Commission',
+            'Resource and Development Committee',
+            'SCIC and JDE or equivalent technical planning team',
+            'Utah Division of Water Rights, Water Resources, and statewide planning offices',
+            'Bureau of Reclamation, BIA, Army Corps, EPA, and finance partners'
+          ],
+          funding: [
+            'Navajo Nation capital and settlement-related channels',
+            'Utah infrastructure and water funding',
+            'Bureau of Reclamation WaterSMART and related programs',
+            'USDA Rural Development',
+            'EPA drinking water infrastructure programs',
+            'BIA right-of-way support and NGO / philanthropic planning match'
+          ],
+          permits: ['NEPA and trust land review', 'Army Corps 404/401 if water crossings occur', 'Stormwater permitting and right-of-way approvals']
+        },
+        communityWater: {
+          label: 'Community drinking water systems',
+          summary: 'Begin with local leadership and the operating utility path, then shape infrastructure and funding around service expansion or replacement needs.',
+          contacts: [
+            'Chapter President or local water lead',
+            'NTUA and Navajo Nation Water Resources',
+            'Navajo Utah Commission and IHS Sanitation Facilities',
+            'Utah drinking water entities where applicable',
+            'EPA or other infrastructure funders',
+            'Planning, match, and implementation partners'
+          ],
+          funding: [
+            'IHS Sanitation Facilities',
+            'NTUA / Navajo capital',
+            'EPA drinking water or Section 106 support',
+            'Utah Drinking Water Board',
+            'Philanthropy for planning or match'
+          ],
+          permits: ['Utility planning and service boundary review', 'Drinking water compliance coordination', 'Construction and infrastructure approvals']
         }
       }
     };
 
-    const priorityList = document.getElementById('priorityList');
-    const pathGrid = document.getElementById('pathGrid');
-    const fundGrid = document.getElementById('fundGrid');
-    const stepsGrid = document.getElementById('stepsGrid');
-    const timelineTable = document.getElementById('timelineTable');
-    const riskGrid = document.getElementById('riskGrid');
+    const els = {
+      projectName: document.getElementById('projectName'),
+      community: document.getElementById('community'),
+      projectType: document.getElementById('projectType'),
+      jurisdiction: document.getElementById('jurisdiction'),
+      urgency: document.getElementById('urgency'),
+      stage: document.getElementById('stage'),
+      details: document.getElementById('details'),
+      buildBtn: document.getElementById('buildBtn'),
+      printBtn: document.getElementById('printBtn'),
+      logicBullets: document.getElementById('logicBullets'),
+      statusBadge: document.getElementById('statusBadge'),
+      summaryTitle: document.getElementById('summaryTitle'),
+      summaryText: document.getElementById('summaryText'),
+      priorityList: document.getElementById('priorityList'),
+      sequenceGrid: document.getElementById('sequenceGrid'),
+      logicGrid: document.getElementById('logicGrid'),
+      fundingGrid: document.getElementById('fundingGrid'),
+      timelineBody: document.getElementById('timelineBody'),
+      reportOutput: document.getElementById('reportOutput')
+    };
 
-    function renderStaticContent() {
-      stepsGrid.innerHTML = APP.steps.map((step, index) => `
-        <article class="step-card">
-          <div class="kicker">Step ${index + 1} · ${step.timeline}</div>
-          <h3 class="title-sm">${step.title}</h3>
-          <p class="muted">${step.objective}</p>
-          <ul class="clean" style="margin-top:1rem;">${step.outputs.map(o => `<li>${o}</li>`).join('')}</ul>
-        </article>
-      `).join('');
-
-      timelineTable.innerHTML = APP.timeline.map(row => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td></tr>`).join('');
-
-      riskGrid.innerHTML = APP.risks.map(risk => `
-        <article class="resource-card">
-          <div class="kicker">Risk check</div>
-          <h3 class="title-sm">${risk.title}</h3>
-          <p class="muted">${risk.text}</p>
-        </article>
-      `).join('');
+    function renderTimeline(){
+      els.timelineBody.innerHTML = APP.timeline.map(row => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td></tr>`).join('');
     }
 
-    function stageText(stage) {
-      return {
-        idea: 'Idea stage',
-        planning: 'Planning stage',
-        design: 'Design and permitting stage',
-        funding: 'Funding-ready stage'
-      }[stage] || 'Idea stage';
+    function getStageLabel(stage){
+      return ({idea:'Idea stage',scoping:'Scoping stage',design:'Design and permitting stage',funding:'Funding package stage'})[stage] || 'Planning stage';
     }
 
-    function buildPath() {
-      const projectType = document.getElementById('projectType').value;
-      const jurisdiction = document.getElementById('jurisdiction').value;
-      const stage = document.getElementById('stage').value;
-      const projectName = document.getElementById('projectName').value.trim();
-      const location = document.getElementById('location').value.trim();
-      const needs = document.getElementById('needs').value.trim();
+    function buildLogic(path, jurisdiction, urgency, stage){
+      const logic = [];
+      if (urgency === 'emergency') logic.push('If there is an immediate health or safety issue, move county, public health, or emergency partners forward without skipping Tribal leadership notice.');
+      if (jurisdiction === 'tribal') logic.push('If the issue is primarily on Tribal land, start with Chapter and Tribal leadership before county, state, or federal entities.');
+      if (jurisdiction === 'multi') logic.push('If the project crosses Tribal, county, state, or federal systems, bring in the Navajo Utah Commission early as a coordination bridge.');
+      if (stage === 'idea') logic.push('If the project is still at idea stage, focus on problem definition, affected households or sites, and the first three calls rather than full funding outreach.');
+      if (stage === 'design') logic.push('If design or permitting is underway, move permit-triggering agencies earlier to avoid rework.');
+      if (stage === 'funding') logic.push('If the pathway is already defined, layer funders after governance, ownership, and approvals are clearer.');
+      if (path === 'majorPipelines') logic.push('If the project is a major pipeline or settlement-scale system, confirm legal, governance, and long-term operations early, before final financing assumptions.');
+      if (path === 'wells') logic.push('If wells are contaminated, separate immediate health protection from the long-term infrastructure solution.');
+      return logic;
+    }
 
-      const cfg = APP.configs[projectType];
-      const jurisdictionText = {
-        tribal: 'primarily on Tribal land',
-        multi: 'crossing Tribal, county, state, or federal lines',
-        county: 'with county or municipal coordination needs'
-      }[jurisdiction];
+    function buildProject(){
+      const projectName = els.projectName.value.trim() || 'Unnamed project';
+      const community = els.community.value.trim() || 'Unspecified community';
+      const pathKey = els.projectType.value;
+      const jurisdiction = els.jurisdiction.value;
+      const urgency = els.urgency.value;
+      const stage = els.stage.value;
+      const details = els.details.value.trim() || 'No additional detail entered.';
+      const path = APP.pathways[pathKey];
+      const logic = buildLogic(pathKey, jurisdiction, urgency, stage);
 
-      document.getElementById('stageBadge').textContent = stageText(stage);
-      document.getElementById('summaryTitle').textContent = `${cfg.label} project ${jurisdictionText}`;
-      document.getElementById('summaryText').textContent = `${projectName || 'This project'} in ${location || 'the watershed area'} is currently at the ${stageText(stage).toLowerCase()}. ${cfg.summary}${needs ? ' Key project note: ' + needs : ''}`;
+      els.statusBadge.textContent = getStageLabel(stage);
+      els.summaryTitle.textContent = `${path.label} — ${community}`;
+      els.summaryText.textContent = `${projectName} is being planned for ${community}. ${path.summary}`;
 
-      const stageActions = {
-        idea: ['Validate community need and support', 'Name a lead and define the core problem', 'Start the stakeholder map before funding outreach'],
-        planning: ['Document current barriers and timeline assumptions', 'Use facilitator-style outreach to surface bottlenecks', 'Prepare a short concept package for coordination meetings'],
-        design: ['Clarify permits, approvals, and jurisdiction sequence', 'Pair technical design with partner commitments', 'Build a draft funding stack tied to readiness'],
-        funding: ['Lead with project story, readiness, and endorsements', 'Match funders to jurisdiction and project type', 'Track asks, deadlines, and next approvals in one place']
-      };
+      const priorities = [
+        'Confirm Tribal and Chapter leadership alignment first.',
+        'Use the recommended order of contact rather than contacting all entities at once.',
+        'Clarify ownership, permitting triggers, and the likely funding package before broad outreach.',
+        urgency === 'emergency' ? 'Pair immediate response with a longer-term project track.' : 'Document need, impact, and beneficiary groups early.',
+        stage === 'funding' ? 'Prepare a defined funding stack tied to a clear pathway.' : 'Build the pathway before launching full funding conversations.'
+      ];
+      els.priorityList.innerHTML = priorities.map(item => `<li>${item}</li>`).join('');
 
-      priorityList.innerHTML = [...cfg.decisions, ...stageActions[stage]].slice(0, 5).map(item => `<li>${item}</li>`).join('');
-
-      pathGrid.innerHTML = cfg.sequence.map((item, idx) => `
-        <article class="path-card">
-          <div class="kicker">Engage ${idx + 1}</div>
-          <h3 class="title-sm">${item}</h3>
-          <p class="muted">${idx === 0 ? 'Begin here to confirm local or Tribal direction before external coordination expands.' : idx < 4 ? 'Bring this partner in after the project need, geography, and leadership path are clearer.' : 'Use this step to resolve approvals, technical fit, or funding alignment.'}</p>
+      els.sequenceGrid.innerHTML = path.contacts.map((contact, i) => `
+        <article class="card" style="padding:var(--space-5)">
+          <div class="kicker">Contact ${i+1}</div>
+          <h3 class="title-sm">${contact}</h3>
+          <p>${i===0 ? 'Start here to confirm community need, local authority, and Tribal alignment.' : i<3 ? 'Bring this entity in once the issue and geography are better defined.' : 'Use this contact to handle cross-system coordination, permitting, or funding alignment.'}</p>
         </article>
       `).join('');
 
-      const fundBase = cfg.funding.map((item, idx) => ({
-        title: item,
-        text: idx === 0 ? 'Best pursued once leadership alignment and a clear project description are in place.' : idx === 1 ? 'Useful when infrastructure scope, permits, or service area are becoming clearer.' : 'Often paired with planning, engineering, facilitation, or bridge needs.'
-      }));
+      els.logicBullets.innerHTML = logic.map(item => `<li>${item}</li>`).join('');
+      els.logicGrid.innerHTML = logic.map(item => `
+        <article class="card" style="padding:var(--space-5)">
+          <div class="kicker">If-then rule</div>
+          <p>${item}</p>
+        </article>
+      `).join('');
 
-      if (jurisdiction === 'multi') {
-        fundBase.unshift({ title: 'Multi-jurisdiction coordination package', text: 'Bundle facilitation, mapping, and early legal or permitting clarification before major capital requests.' });
-      }
-      if (stage === 'idea') {
-        fundBase.push({ title: 'Planning and readiness support', text: 'Focus first on concept papers, mapping, stakeholder outreach, and early feasibility work.' });
-      }
-
-      fundGrid.innerHTML = fundBase.slice(0, 6).map(item => `
-        <article class="fund-card">
-          <div class="kicker">Funding lane</div>
+      els.fundingGrid.innerHTML = [
+        ...path.funding.map(item => ({title:item,text:'Potential funding or support source tied to this project type.'})),
+        ...path.permits.map(item => ({title:item,text:'Coordination or permitting issue to flag early in planning.'}))
+      ].slice(0,8).map(item => `
+        <article class="card" style="padding:var(--space-5)">
+          <div class="kicker">Funding or permitting hook</div>
           <h3 class="title-sm">${item.title}</h3>
-          <p class="muted">${item.text}</p>
+          <p>${item.text}</p>
         </article>
       `).join('');
+
+      els.reportOutput.textContent =
+`LOWER SAN JUAN PROJECT BUILDER REPORT
+
+Project name: ${projectName}
+Community / Chapter: ${community}
+Project type: ${path.label}
+Jurisdiction pattern: ${jurisdiction}
+Urgency: ${urgency}
+Current stage: ${getStageLabel(stage)}
+
+Project description
+${details}
+
+Recommended project summary
+${path.summary}
+
+Sequence for contacting entities
+${path.contacts.map((item, idx) => `${idx + 1}. ${item}`).join('\n')}
+
+If-then logic
+${logic.map((item, idx) => `${idx + 1}. ${item}`).join('\n')}
+
+Funding and permitting hooks
+${[...path.funding, ...path.permits].map((item, idx) => `${idx + 1}. ${item}`).join('\n')}
+
+Priority actions
+${priorities.map((item, idx) => `${idx + 1}. ${item}`).join('\n')}
+
+Coordination note
+This report is a planning and coordination aid. It should be used to organize Tribal-first engagement, clarify the order of contact, and prepare for approvals, funding conversations, and project tracking.`;
     }
 
-    renderStaticContent();
-    buildPath();
-
-    document.getElementById('buildPath').addEventListener('click', buildPath);
+    renderTimeline();
+    buildProject();
+    els.buildBtn.addEventListener('click', buildProject);
+    els.printBtn.addEventListener('click', () => window.print());
 
     (function(){
-      const toggle=document.querySelector('[data-theme-toggle]');
-      const root=document.documentElement;
-      let theme=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-      root.setAttribute('data-theme', theme);
-      function icon(){
-        toggle.innerHTML = theme==='dark'
+      const btn=document.querySelector('[data-theme-toggle]');
+      const root=document.documentElement; let theme=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+      function paint(){
+        root.setAttribute('data-theme',theme);
+        btn.innerHTML=theme==='dark'
           ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
           : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-        toggle.setAttribute('aria-label', 'Switch to ' + (theme==='dark' ? 'light' : 'dark') + ' mode');
+        btn.setAttribute('aria-label','Switch to '+(theme==='dark'?'light':'dark')+' mode');
       }
-      icon();
-      toggle.addEventListener('click', ()=>{ theme = theme==='dark' ? 'light' : 'dark'; root.setAttribute('data-theme', theme); icon(); });
+      paint(); btn.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';paint();});
     })();
   </script>
 </body>
