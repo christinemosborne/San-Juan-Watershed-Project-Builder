@@ -449,11 +449,32 @@ ${priorities.map((item, idx) => `${idx + 1}. ${item}`).join('\n')}
 Coordination note
 This report is a planning and coordination aid. It should be used to organize tribal-first engagement, clarify the order of contact, and prepare for approvals, funding conversations, and project tracking.`;
     }
+async function saveProject() {
+  if (!PROJECT_API_URL || PROJECT_API_URL.indexOf('http') !== 0) {
+    alert('Project save URL is not configured.');
+    return;
+  }
 
+  const projectName = els.projectName.value.trim() || 'Unnamed project';
+  // ...build the payload...
+
+  try {
+    const res = await fetch(PROJECT_API_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    alert('Project saved to portal sheet.');
+  } catch (err) {
+    alert('Could not save project. Please try again.');
+  }
+}
     renderTimeline();
     buildProject();
     els.buildBtn.addEventListener('click', buildProject);
     els.printBtn.addEventListener('click', () => window.print());
+    els.saveBtn.addEventListener('click', saveProject);
 
     (function(){
       const btn=document.querySelector('[data-theme-toggle]');
