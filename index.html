@@ -449,27 +449,51 @@ ${priorities.map((item, idx) => `${idx + 1}. ${item}`).join('\n')}
 Coordination note
 This report is a planning and coordination aid. It should be used to organize tribal-first engagement, clarify the order of contact, and prepare for approvals, funding conversations, and project tracking.`;
     }
-async function saveProject() {
-  if (!PROJECT_API_URL || PROJECT_API_URL.indexOf('http') !== 0) {
-    alert('Project save URL is not configured.');
-    return;
-  }
+    async function saveProject() {
+      if (!PROJECT_API_URL || PROJECT_API_URL.indexOf('http') !== 0) {
+        alert('Project save URL is not configured.');
+        return;
+      }
 
-  const projectName = els.projectName.value.trim() || 'Unnamed project';
-  // ...build the payload...
+      const projectName = document.getElementById('projectName').value.trim() || 'Unnamed project';
+      const community   = document.getElementById('community').value.trim() || '';
+      const projectType = document.getElementById('projectType').value;
+      const jurisdiction= document.getElementById('jurisdiction').value;
+      const urgency     = document.getElementById('urgency').value;
+      const stage       = document.getElementById('stage').value;
+      const details     = document.getElementById('details').value.trim() || '';
 
-  try {
-    const res = await fetch(PROJECT_API_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    alert('Project saved to portal sheet.');
-  } catch (err) {
-    alert('Could not save project. Please try again.');
-  }
-}
+      const payload = {
+        project_id: '',
+        project_name: projectName,
+        chapter: community,
+        project_type: projectType,
+        jurisdiction: jurisdiction,
+        urgency: urgency,
+        stage: stage,
+        lead_entity: '',
+        main_contact: '',
+        description: details,
+        pathway_key: projectType,
+        status: 'Active',
+        priority: '',
+        created_by: ''
+      };
+
+      try {
+        await fetch(PROJECT_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        alert('Project saved to portal sheet.');
+      } catch (err) {
+        console.error(err);
+        alert('Could not save project. Please try again.');
+      }
+    }
+
     renderTimeline();
     buildProject();
     els.buildBtn.addEventListener('click', buildProject);
@@ -489,5 +513,25 @@ async function saveProject() {
       paint(); btn.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';paint();});
     })();
   </script>
-</body>
+    renderTimeline();
+    buildProject();
+    els.buildBtn.addEventListener('click', buildProject);
+    els.printBtn.addEventListener('click', () => window.print());
+    els.saveBtn.addEventListener('click', saveProject);
+
+    (function(){
+      const btn=document.querySelector('[data-theme-toggle]');
+      const root=document.documentElement; let theme=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+      function paint(){
+        root.setAttribute('data-theme',theme);
+        btn.innerHTML=theme==='dark'
+          ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+          : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+        btn.setAttribute('aria-label','Switch to '+(theme==='dark'?'light':'dark')+' mode');
+      }
+      paint(); btn.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';paint();});
+    })();
+  </script>
+  const PROJECT_API_URL = https://script.google.com/macros/s/AKfycby8LVkh0D3d4M6iQpUzcvyjYnmeJk-_91uw23tTcqAKcYgjDyQsugc0czF-QsiZuR5Y/exec
+  </body>
 </html>
