@@ -516,6 +516,50 @@ This report is a planning and coordination aid. It should be used to organize tr
     const PROJECT_API_URL = 'https://script.google.com/macros/s/AKfycby8LVkh0D3d4M6iQpUzcvyjYnmeJk-_91uw23tTcqAKcYgjDyQsugc0czF-QsiZuR5Y/exec';
 
     // (rest of your JavaScript follows here)
+    async function saveProject() {
+  if (!PROJECT_API_URL || PROJECT_API_URL.indexOf('http') !== 0) {
+    alert('Project save URL is not configured.');
+    return;
+  }
+
+  const projectName = document.getElementById('projectName').value.trim() || 'Unnamed project';
+  const community   = document.getElementById('community').value.trim() || '';
+  const projectType = document.getElementById('projectType').value;
+  const jurisdiction= document.getElementById('jurisdiction').value;
+  const urgency     = document.getElementById('urgency').value;
+  const stage       = document.getElementById('stage').value;
+  const details     = document.getElementById('details').value.trim() || '';
+
+  const payload = {
+    project_id: '',
+    project_name: projectName,
+    chapter: community,
+    project_type: projectType,
+    jurisdiction: jurisdiction,
+    urgency: urgency,
+    stage: stage,
+    lead_entity: '',
+    main_contact: '',
+    description: details,
+    pathway_key: projectType,
+    status: 'Active',
+    priority: '',
+    created_by: ''
+  };
+
+  try {
+    await fetch(PROJECT_API_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    alert('Project saved to portal sheet.');
+  } catch (err) {
+    console.error(err);
+    alert('Could not save project. Please try again.');
+  }
+}
     renderTimeline();
     buildProject();
     els.buildBtn.addEventListener('click', buildProject);
